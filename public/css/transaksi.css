@@ -1,0 +1,385 @@
+/* Pastikan file ini dimuat SETELAH file tema utama Anda */
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color); /* Menggunakan variabel dari tema */
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transisi untuk perubahan tema */
+}
+
+.wadah-histori {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    border-radius: 8px;
+    /* Bayangan bisa diambil dari tema atau tetap statis jika tidak berubah */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Tetap statis jika tidak ada var bayangan di tema */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Headings and Messages */
+.judul-seksi {
+    font-size: 1.8rem;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    margin-bottom: 25px;
+    /* Garis bawah bisa diambil dari tema, atau tetap statis */
+    border-bottom: 2px solid var(--border-color); /* Menggunakan variabel dari tema */
+    padding-bottom: 15px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.jarak-bawah-2 {
+    margin-bottom: 20px;
+}
+
+.peringatan-sukses,
+.peringatan-gagal {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.peringatan-sukses {
+    /* Menggunakan variabel alert dari tema */
+    background-color: var(--alert-success-bg-gradient-start); /* Atau alert-success-bg-gradient-start */
+    color: var(--alert-success-text);
+    border: 1px solid var(--alert-success-bg-gradient-end); /* Atau border-success yang lebih spesifik jika ada */
+}
+
+.peringatan-gagal {
+    /* Menggunakan variabel alert dari tema */
+    background-color: var(--alert-danger-bg-gradient-start); /* Atau alert-danger-bg-gradient-start */
+    color: var(--alert-danger-text);
+    border: 1px solid var(--alert-danger-bg-gradient-end); /* Atau border-danger yang lebih spesifik jika ada */
+}
+
+/* Card Styling */
+.kartu {
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* Tetap statis jika tidak ada var bayangan di tema */
+    padding: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Table Styling */
+.pembungkus-tabel {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.tabel-kustom {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.tabel-kustom thead th {
+    /* Menggunakan variabel dari tema, jika ada yang cocok untuk header tabel */
+    background-color: var(--bs-card-cap-bg); /* Contoh: menggunakan warna card header dari Bootstrap overrides */
+    color: var(--text-default); /* Warna teks default atau spesifik untuk header */
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color); /* Menggunakan variabel dari tema */
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.tabel-kustom tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    vertical-align: middle;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.tabel-kustom tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabel-kustom tbody tr:hover {
+    background-color: var(--sidebar-hover);
+}
+
+.tabel-kustom th,
+.tabel-kustom td {
+    border-right: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+}
+
+.tabel-kustom th:last-child,
+.tabel-kustom td:last-child {
+    border-right: none;
+}
+
+/* Selang-seling warna baris */
+.tabel-kustom tbody tr:nth-child(odd) {
+    background-color: var(--card-bg); /* Tetap sama dengan card-bg */
+}
+
+.tabel-kustom tbody tr:nth-child(even) {
+    background-color: var(--bs-tertiary-bg); /* Menggunakan warna yang mirip dengan `bg-light` di Bootstrap untuk striping */
+}
+
+.tampilan-tarif {
+    font-weight: 500;
+    color: var(--color-success-base); /* Menggunakan variabel sukses dari tema */
+}
+
+/* Button Styling */
+.tombol {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    font-weight: 500;
+    gap: 5px;
+}
+
+.tombol.garis-luar {
+    background-color: transparent;
+    color: var(--color-danger-base); /* Menggunakan variabel danger dari tema */
+    border: 1px solid var(--color-danger-base);
+}
+
+.tombol.garis-luar:hover {
+    background-color: var(--color-danger-base);
+    color: white; /* Asumsi teks putih saat hover */
+}
+
+.tombol.sekunder {
+    background-color: var(--color-secondary-base); /* Menggunakan variabel secondary dari tema */
+    color: white; /* Asumsi teks putih */
+    border: 1px solid var(--color-secondary-base);
+}
+
+.tombol.sekunder:hover {
+    background-color: var(--primary-hover); /* Atau warna hover yang lebih gelap dari secondary */
+    border-color: var(--primary-hover);
+}
+
+.tombol.kecil {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.jarak-atas-2 {
+    margin-top: 20px;
+}
+
+/* Pagination Styling */
+.pembungkus-paginasi {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    transition: border-color 0.3s ease;
+}
+
+.pagination li {
+    margin: 0;
+}
+
+.pagination li a,
+.pagination li span {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--color-accent-base); /* Menggunakan variabel accent dari tema */
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    border-right: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    transition: background-color 0.2s, color 0.2s, border-color 0.3s ease;
+}
+
+.pagination li:last-child a,
+.pagination li:last-child span {
+    border-right: none;
+}
+
+.pagination li a:hover:not(.active) {
+    background-color: var(--sidebar-hover); /* Menggunakan variabel dari tema */
+}
+
+.pagination li.active span {
+    background-color: var(--color-accent-base); /* Menggunakan variabel accent dari tema */
+    color: var(--sidebar-active-text); /* Menggunakan variabel dari tema (putih) */
+    border-color: var(--color-accent-base);
+    cursor: default;
+}
+
+.pagination li.disabled span {
+    color: var(--text-muted); /* Menggunakan variabel muted text dari tema */
+    background-color: var(--bs-tertiary-bg); /* Menggunakan variabel dari tema */
+    cursor: not-allowed;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Tetap statis jika tidak ada var untuk overlay */
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.modal.aktif {
+    display: flex;
+}
+
+.isi-modal {
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    margin: auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Tetap statis jika tidak ada var bayangan di tema */
+    width: 90%;
+    max-width: 500px;
+    animation: fadeIn 0.3s ease-out;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kepala-modal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.kepala-modal h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    transition: color 0.3s ease;
+}
+
+.tutup-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-muted); /* Menggunakan variabel dari tema */
+    transition: color 0.2s;
+}
+
+.tutup-modal:hover {
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+}
+
+.isi-badan {
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.isi-badan p {
+    margin-bottom: 10px;
+}
+
+.isi-badan ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.isi-badan ul li {
+    padding: 5px 0;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    transition: color 0.3s ease;
+}
+
+.kaki-modal {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    padding-top: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.formulir-hapus {
+    display: inline;
+}
+
+/* Grid layout for filter form */
+.grid-filter-empat {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+/* Form group */
+.group-formulir {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label-formulir {
+    font-weight: 500;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+/* Input and select */
+.kontrol-input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border: 1px solid var(--input-border); /* Menggunakan variabel dari tema */
+    border-radius: 5px;
+    background-color: var(--input-bg); /* Menggunakan variabel dari tema */
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.kontrol-input:focus {
+    border-color: var(--color-accent-base); /* Menggunakan variabel accent dari tema */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--bs-primary-rgb),0.15); /* Menggunakan variabel RGB dari Bootstrap overrides */
+}
+
+/* Action buttons */
+.aksi-filter {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

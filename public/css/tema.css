@@ -1,0 +1,135 @@
+/* ========================================= */
+/* --- VARIABLE CSS UNTUK TEMA --- */
+/* ========================================= */
+
+/* Default Theme (Light) */
+:root {
+    /* Palet Warna Dasar */
+    --color-primary-base: #2C3E50; /* Primary - Gelap, elegan */
+    --color-secondary-base: #95A5A6; /* Secondary - Abu-abu netral */
+    --color-accent-base: #3498DB; /* Accent - Biru cerah */
+    --color-success-base: #2ECC71; /* Success - Hijau */
+    --color-warning-base: #F1C40F; /* Warning - Kuning */
+    --color-danger-base: #E74C3C; /* Danger - Merah */
+    --color-background-base: #F8F9FA; /* Background - Abu terang */
+    --color-card-base: #FFFFFF; /* Card/Panel - Putih bersih */
+    --color-text-dark-base: #212529; /* Text (dark) - Teks utama */
+
+    /* Mapping Variabel Umum */
+    --primary-color: var(--color-primary-base);
+    --primary-hover: #1F2C3A;
+
+    --background-color: var(--color-background-base);
+    --card-bg: var(--color-card-base);
+    --text-default: var(--color-text-dark-base);
+    --text-light: var(--color-card-base);
+    --text-muted: var(--color-secondary-base);
+    --border-color: #E2E8F0;
+    --input-bg: var(--color-card-base);
+    --input-border: #CBD5E1;
+
+    /* Bootstrap overrides */
+    --bs-body-bg: var(--background-color);
+    --bs-body-color: var(--text-default);
+    --bs-card-bg: var(--card-bg);
+    --bs-card-cap-bg: var(--color-background-base); /* Tetap ini untuk light mode, biasanya lebih terang dari card-bg */
+    --bs-border-color: var(--border-color);
+    --bs-tertiary-bg: #F0F2F5; /* Sudah kita perbaiki agar berbeda dari card-bg di light mode */
+    --bs-secondary-color: var(--text-muted);
+    --bs-primary: var(--color-accent-base);
+    --bs-primary-rgb: 52, 152, 219;
+    --bs-secondary: var(--color-secondary-base);
+    --bs-dark-rgb: 44, 62, 80;
+    --bs-success: var(--color-success-base);
+    --bs-danger: var(--color-danger-base);
+    --bs-warning: var(--color-warning-base);
+
+    /* Sidebar specific */
+    --sidebar-width: 280px;
+    --sidebar-bg: var(--color-primary-base);
+    --sidebar-hover: #3E546C;
+    --sidebar-active-bg-gradient-start: var(--color-accent-base);
+    --sidebar-active-bg-gradient-end: #2E8ADC;
+    --sidebar-active-text: white;
+    --sidebar-border-active: white;
+
+    /* Navbar specific */
+    --navbar-bg: var(--color-primary-base);
+    --navbar-text: var(--text-light);
+    --navbar-link-hover-bg: var(--sidebar-hover);
+    --navbar-link-hover-text: var(--text-light);
+
+    /* Alert styles */
+    --alert-success-bg-gradient-start: var(--color-success-base);
+    --alert-success-bg-gradient-end: #28B964;
+    --alert-success-text: white;
+    --alert-danger-bg-gradient-start: var(--color-danger-base);
+    --alert-danger-bg-gradient-end: #D23C2C;
+    --alert-danger-text: white;
+}
+
+
+[data-theme="dark"]{
+    @media (prefers-color-scheme: dark) {
+        /* Palet warna untuk Dark Mode - Disesuaikan untuk kesan profesional */
+        --color-primary-base: #1C2526;
+        --color-secondary-base: #A0AEC0;
+        --color-accent-base: #3B82F6;
+        --color-success-base: #22C55E;
+        --color-warning-base: #F59E0B;
+        --color-danger-base: #EF4444;
+        --color-background-base: #111827;
+        --color-card-base: #1F2A44;
+        --color-text-dark-base: #D1D5DB;
+    
+        /* Mapping ke variabel yang sudah ada */
+        --primary-color: var(--color-primary-base);
+        --primary-hover: #2D3748;
+        --background-color: var(--color-background-base);
+        --card-bg: var(--color-card-base);
+        --text-default: var(--color-text-dark-base);
+        --text-light: #F9FAFB;
+        --text-muted: var(--color-secondary-base);
+        --border-color: #374151;
+        --input-bg: #2D3748;
+        --input-border: #4B5563;
+    
+        /* Bootstrap overrides for Dark Theme */
+        --bs-body-bg: var(--background-color);
+        --bs-body-color: var(--text-default);
+        --bs-card-bg: var(--card-bg);
+        --bs-card-cap-bg: #151A25; /* PERUBAHAN UTAMA: Warna baru untuk header tabel di dark mode */
+        --bs-border-color: var(--border-color);
+        --bs-tertiary-bg: #1A243A; /* Sudah kita perbaiki agar berbeda dari card-bg di dark mode */
+        --bs-secondary-color: var(--text-muted);
+        --bs-primary: var(--color-accent-base);
+        --bs-primary-rgb: 59, 130, 246;
+        --bs-secondary: var(--color-secondary-base);
+        --bs-dark-rgb: 28, 37, 38;
+        --bs-success: var(--color-success-base);
+        --bs-danger: var(--color-danger-base);
+        --bs-warning: var(--color-warning-base);
+    
+        /* Sidebar specific */
+        --sidebar-bg: var(--color-primary-base);
+        --sidebar-hover: #374151;
+        --sidebar-active-bg-gradient-start: var(--color-accent-base);
+        --sidebar-active-bg-gradient-end: #2563EB;
+        --sidebar-active-text: white;
+        --sidebar-border-active: white;
+    
+        /* Navbar specific */
+        --navbar-bg: var(--color-primary-base);
+        --navbar-text: var(--text-light);
+        --navbar-link-hover-bg: var(--sidebar-hover);
+        --navbar-link-hover-text: var(--text-light);
+    
+        /* Alert styles */
+        --alert-success-bg-gradient-start: var(--color-success-base);
+        --alert-success-bg-gradient-end: #16A34A;
+        --alert-success-text: white;
+        --alert-danger-bg-gradient-start: var(--color-danger-base);
+        --alert-danger-bg-gradient-end: #DC2626;
+        --alert-danger-text: white;
+    }
+}

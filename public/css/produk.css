@@ -1,0 +1,193 @@
+/* Pastikan file ini dimuat SETELAH file tema utama Anda (misalnya themes.css) */
+
+/* Body background and font */
+body {
+    background-color: var(--background-color); /* Menggunakan variabel dari tema */
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+/* Main container styling */
+.app-container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 25px;
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    border-radius: 8px;
+    /* Variabel shadow mungkin perlu ditambahkan di file tema jika ada kebutuhan */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Default shadow, bisa diganti jika ada var shadow di tema */
+}
+
+/* Section title styling */
+.section-title {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color); /* Menggunakan variabel dari tema */
+}
+
+/* Alert/Empty state styling */
+.custom-alert {
+    /* Menggunakan variabel alert dari tema */
+    background-color: var(--alert-danger-bg-gradient-start); /* Menggunakan danger base sebagai contoh */
+    color: var(--alert-danger-text); /* Menggunakan teks alert danger */
+    border: 1px solid var(--alert-danger-bg-gradient-end); /* Menggunakan akhir gradient danger sebagai border */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Product Card Styling */
+.product-card {
+    background-color: var(--card-bg); /* Menggunakan variabel dari tema */
+    border: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* Default shadow, bisa diganti jika ada var shadow di tema */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); /* Default shadow, bisa diganti jika ada var shadow di tema */
+}
+
+.product-image-wrapper {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    background-color: var(--bs-tertiary-bg); /* Menggunakan variabel dari tema (biasanya untuk bg-light/tertiary) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-placeholder {
+    text-align: center;
+    color: var(--text-muted); /* Menggunakan variabel dari tema */
+    padding: 15px;
+}
+
+.image-placeholder span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.image-placeholder p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.product-info {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.product-name {
+    font-size: 1.05rem;
+    color: var(--text-default); /* Menggunakan variabel dari tema */
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-price {
+    font-weight: 600;
+    color: var(--color-success-base); /* Menggunakan variabel sukses dari tema */
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.product-actions-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 15px;
+    border-top: 1px solid var(--border-color); /* Menggunakan variabel dari tema */
+    background-color: var(--bs-tertiary-bg); /* Menggunakan variabel dari tema (subtle background) */
+    gap: 8px;
+}
+
+/* Button Customizations (Leveraging Bootstrap classes but styled with retro theme) */
+.btn-primary.custom-btn {
+    background-color: var(--color-primary-base); /* Menggunakan variabel primary base dari tema */
+    border-color: var(--color-primary-base); /* Menggunakan variabel primary base dari tema */
+    color: var(--text-light); /* Menggunakan variabel text-light dari tema (asumsi putih) */
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn-primary.custom-btn:hover {
+    background-color: var(--primary-hover); /* Menggunakan variabel primary hover dari tema */
+    border-color: var(--primary-hover); /* Menggunakan variabel primary hover dari tema */
+}
+
+.btn-sm.custom-edit-btn {
+    background-color: var(--color-accent-base); /* Menggunakan variabel accent base dari tema */
+    color: var(--text-light); /* Asumsi teks putih di tombol accent */
+    border: none;
+    padding: 0.375rem 0.625rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+.btn-sm.custom-edit-btn:hover {
+    background-color: var(--sidebar-active-bg-gradient-end); /* Menggunakan salah satu warna gradient accent untuk hover */
+}
+
+.btn-sm.custom-delete-btn {
+    background-color: var(--color-danger-base); /* Menggunakan variabel danger base dari tema */
+    color: var(--alert-danger-text); /* Menggunakan teks alert danger (asumsi putih) */
+    border: none;
+    padding: 0.375rem 0.625rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+.btn-sm.custom-delete-btn:hover {
+    background-color: var(--alert-danger-bg-gradient-end); /* Menggunakan akhir gradient danger untuk hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-container {
+        margin: 15px;
+        padding: 15px;
+    }
+    .section-title {
+        font-size: 1.5rem;
+    }
+    .btn-primary.custom-btn {
+        width: 100%;
+        margin-top: 15px;
+        text-align: center;
+    }
+    .product-actions-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-actions-footer .btn-sm {
+        width: 100%;
+        margin-top: 8px;
+    }
+}
