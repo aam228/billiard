@@ -1,13 +1,12 @@
 .form-wrapper {
     max-width: 400px;
     margin: 0 auto;
-    background-color: var(--card-bg); /* Mapped to card-bg from themes.css */
+    background-color: var(--card-bg);
     border-radius: 10px;
-    box-shadow: var(--shadow-md); /* Using the component's shadow variable, or map to theme's if available */
+    box-shadow: var(--shadow-md);
     padding: 1.5rem;
 }
 
-/* Header */
 .form-header {
     text-align: center;
     margin-bottom: 1.25rem;
@@ -17,16 +16,15 @@
     margin: 0;
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-default); /* Mapped to text-default from themes.css */
+    color: var(--text-default);
 }
 
 .form-header p {
     margin: 0;
     font-size: 0.85rem;
-    color: var(--text-muted); /* Mapped to text-muted from themes.css */
+    color: var(--text-muted);
 }
 
-/* Form Group */
 .form-group {
     margin-bottom: 1.25rem;
 }
@@ -36,37 +34,35 @@
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
-    color: var(--text-default); /* Mapped to text-default from themes.css */
+    color: var(--text-default);
 }
 
 .form-group input {
     width: 100%;
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
-    border: 1px solid var(--border-color); /* Mapped to border-color from themes.css */
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: var(--input-bg); /* Mapped to input-bg from themes.css */
-    color: var(--text-default); /* Mapped to text-default from themes.css */
+    background-color: var(--input-bg);
+    color: var(--text-default);
     outline: none;
     transition: border-color 0.2s ease;
 }
 
 .form-group input:focus {
-    border-color: var(--color-accent-base); /* Mapped to accent color from themes.css */
+    border-color: var(--color-accent-base);
 }
 
-/* Badge */
 .badge {
     display: inline-block;
     padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
-    background-color: var(--color-warning-base); /* Mapped to warning color from themes.css */
-    color: var(--color-primary-base); /* Using primary as a contrasting color for the badge text, adjust if needed */
+    background-color: var(--color-warning-base);
+    color: var(--color-text-dark-base);
     border-radius: 4px;
     margin-left: 0.5rem;
 }
 
-/* Button Group */
 .button-group {
     display: flex;
     flex-direction: column;
@@ -74,7 +70,6 @@
     margin-top: 1.25rem;
 }
 
-/* Buttons */
 .btn {
     padding: 0.5rem;
     font-size: 0.9rem;
@@ -89,19 +84,19 @@
 }
 
 .btn-primary {
-    background-color: var(--color-primary-base); /* Mapped to primary base from themes.css */
-    color: var(--text-light); /* Mapped to text-light from themes.css (should be white) */
+    background-color: var(--color-primary-base);
+    color: var(--text-light);
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-hover); /* Mapped to primary hover from themes.css */
+    background-color: var(--primary-hover);
 }
 
 .btn-secondary {
-    background-color: var(--bs-tertiary-bg); /* Mapped to tertiary background from themes.css */
-    color: var(--text-default); /* Mapped to text-default from themes.css */
+    background-color: var(--bs-tertiary-bg);
+    color: var(--text-default);
 }
 
 .btn-secondary:hover {
-    background-color: var(--border-color); /* Using border-color for a slightly darker hover, adjust if needed */
+    background-color: var(--border-color);
 }

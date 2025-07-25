@@ -96,6 +96,29 @@
 </div>
 @endsection
 
+@push('styles')
+    <style>
+        /* Style untuk nav-link aktif */
+        .nav-tabs .nav-link.active {
+            color: white !important; /* Membuat teks menjadi putih */
+            /* Anda mungkin juga ingin mengatur warna latar belakang agar teks putih terlihat jelas */
+            /* background-color: #0d6efd; */ /* Contoh warna biru primary Bootstrap */
+        }
+
+        /* Jika Anda ingin juga mengubah warna teks pada hover atau fokus ketika aktif */
+        .nav-tabs .nav-link.active:hover,
+        .nav-tabs .nav-link.active:focus {
+            color: white !important;
+        }
+
+        /* Optional: Menyesuaikan warna latar belakang tab aktif jika belum diatur */
+        .nav-tabs .nav-link.active {
+            background-color: var(--bs-primary); /* Menggunakan warna primary Bootstrap */
+            border-color: var(--bs-primary); /* Menyamakan border dengan background */
+        }
+    </style>
+@endpush
+
 @push('scripts')
 <script>
     // Data dari controller (PHP -> JavaScript)

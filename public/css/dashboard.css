@@ -1,0 +1,123 @@
+.stat-card-border-green {
+    height: 3px;
+    background: var(--color-success-base);
+}
+
+.stat-card-border-orange {
+    height: 3px;
+    background: var(--color-warning-base);
+}
+
+.stat-card-border-blue {
+    height: 3px;
+    background: var(--bs-primary);
+}
+
+.stat-value-lg {
+    font-size: 1.875rem;
+}
+
+.stat-label-sm {
+    font-size: 0.875rem;
+}
+
+.stat-icon-green {
+    width: 40px;
+    height: 40px;
+    background: var(--color-success-base);
+    color: white;
+}
+
+.stat-icon-orange {
+    width: 40px;
+    height: 40px;
+    background: var(--color-warning-base);
+    color: white;
+}
+
+.stat-icon-blue {
+    width: 40px;
+    height: 40px;
+    background: var(--bs-primary);
+    color: white;
+}
+
+.table-indicator-icon {
+    font-size: 1.2rem;
+    color: var(--bs-primary);
+}
+
+.table-name-text {
+    font-size: 0.875rem;
+    color: var(--text-default);
+}
+
+.status-label-sm {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.badge-status-used {
+    background-color: #fef3c7;
+    color: #92400e;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-status-available {
+    background-color: #dcfce7;
+    color: #166534;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-info-text-sm {
+    font-size: 0.8125rem;
+}
+
+.table-info-value-truncate {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-default);
+    font-weight: 600;
+}
+
+.countdown-display-style {
+    background-color: #fef2f2;
+    color: var(--color-danger-base);
+    font-weight: 600;
+    font-size: 0.8125rem;
+}
+
+.btn-order-table-style {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    min-height: 36px;
+}
+
+.empty-state-icon-style {
+    font-size: 2.5rem;
+    opacity: 0.5;
+    color: var(--text-muted);
+}
+
+.empty-state-title-style {
+    font-size: 1.125rem;
+    color: var(--bs-secondary-color);
+}
+
+.empty-state-text-style {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.btn-add-table-style {
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
