@@ -56,7 +56,7 @@
         <nav class="sidebar" id="sidebar">
             <!-- Header -->
             <div class="sidebar-header">
-                <h4><i class="fas fa-8ball" style="color: var(--primary-color);"></i> Billiard Pro</h4>
+                <h4>Admin System</h4>
                 <div class="subtitle">Sistem Informasi</div>
             </div>
             
@@ -110,11 +110,16 @@
                     </div>
                 </div>
             </div>
-            <!-- User Profile Section -->
             <div class="user-profile" style="border-bottom: 0px;">
                 <div class="user-info">
                     <div class="user-avatar">
-                        <i class="fas fa-user"></i>
+                        {{-- Conditional display for profile image or default icon --}}
+                        @if(Auth::user()->profile_image)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="User Profile Image" class="rounded-circle user-profile-image">
+                        @else
+                            {{-- Fallback if no profile image is set --}}
+                            <img src="{{ asset('images/default_profile.png') }}" alt="Default Profile Image" class="rounded-circle user-profile-image">
+                        @endif
                     </div>
                     <div class="user-details">
                         <h6>{{ Auth::user()->name }}</h6>

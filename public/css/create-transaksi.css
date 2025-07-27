@@ -57,8 +57,7 @@
     display: inline-block;
     padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
-    background-color: var(--color-warning-base);
-    color: var(--color-text-dark-base);
+    background-color: var(--color-danger-base);
     border-radius: 4px;
     margin-left: 0.5rem;
 }

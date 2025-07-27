@@ -155,7 +155,7 @@
                                 <i class="fas fa-money-bill-wave"></i>
                                 <span>Tarif/Jam</span>
                             </div>
-                            <div class="fw-bold">
+                            <div class="fw-bold nominal">
                                 Rp {{ number_format($meja->tarif_per_jam, 0, ',', '.') }}
                             </div>
                         </div>
@@ -163,7 +163,7 @@
 
                     <div class="border-top pt-3">
                         <a href="{{ route('transaksi.create', $meja->id) }}"
-                           class="btn btn-primary btn-sm d-flex align-items-center justify-content-center gap-2 w-100 btn-order-table-style">
+                        class="btn d-flex align-items-center justify-content-center gap-2 w-100 btn-order-table-style">
                             <i class="fas fa-play"></i>
                             Pesan Meja
                         </a>

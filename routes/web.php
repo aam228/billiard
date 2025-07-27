@@ -8,7 +8,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PesananMakananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SettingsController; // Make sure this is imported
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -67,6 +67,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/profile', 'updateProfile')->name('settings.updateProfile');
         Route::patch('/password', 'updatePassword')->name('settings.updatePassword');
         Route::patch('/theme', 'updateTheme')->name('settings.updateTheme');
+        // Add the new route for profile image upload
+        Route::patch('/profile-image', 'updateProfileImage')->name('settings.updateProfileImage'); 
     });
 
 });

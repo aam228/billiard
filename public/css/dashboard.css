@@ -31,7 +31,7 @@
 .stat-icon-orange {
     width: 40px;
     height: 40px;
-    background: var(--color-warning-base);
+    background: var(--color-danger-base);
     color: white;
 }
 
@@ -99,6 +99,18 @@
     font-size: 0.8125rem;
     font-weight: 500;
     min-height: 36px;
+    background-color: #4b5563;
+    color: var(--text-light);
+    border-color: var(--color-success-base);   
+}
+
+.btn-order-table-style:hover {
+    background-color: #374151;
+    color: white;
+}
+
+.nominal {
+    color: var(--color-text-dark-base);
 }
 
 .empty-state-icon-style {

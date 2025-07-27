@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('meja', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // BARIS BARU: Menambahkan user_id
-            $table->string('nama_meja')->unique(); 
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('nama_meja'); 
             $table->enum('status', ['tersedia', 'digunakan', 'perawatan'])->default('tersedia'); 
             $table->decimal('tarif_per_jam', 8, 2)->default(50000.00); 
             $table->timestamps();

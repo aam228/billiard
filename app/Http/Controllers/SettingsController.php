@@ -5,89 +5,83 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Storage; // Import Storage facade
 
 class SettingsController extends Controller
 {
-    /**
-     * Menampilkan halaman pengaturan profil dan umum.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
-        $user = Auth::user(); // Dapatkan pengguna yang sedang login
+        // Pastikan user terautentikasi
+        $user = Auth::user();
         return view('settings.index', compact('user'));
     }
 
-    /**
-     * Memperbarui informasi profil pengguna (Nama & Email).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id), // Email harus unik kecuali untuk user itu sendiri
-            ],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
         ]);
 
-        $user->fill($request->only('name', 'email'));
-        // Tidak perlu reset email_verified_at karena Anda tidak ingin verifikasi email ulang
+        $user->name = $request->name;
+        $user->email = $request->email;
         $user->save();
 
-        return redirect()->route('settings.index')->with('success', 'Profil berhasil diperbarui.');
+        return redirect()->route('settings.index')->with('success', 'Profil berhasil diperbarui!');
     }
 
-    /**
-     * Memperbarui kata sandi pengguna.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function updatePassword(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
-            'current_password' => ['required', 'current_password'], // Memverifikasi password lama
-            'password' => ['required', 'confirmed', 'min:8', 'different:current_password'], // Password baru harus berbeda
+            'current_password' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!Hash::check($value, Auth::user()->password)) {
+                    $fail('Kata sandi saat ini salah.');
+                }
+            }],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        $user->update([
-            'password' => Hash::make($request->password),
-        ]);
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-        return redirect()->route('settings.index')->with('success', 'Kata sandi berhasil diperbarui.');
+        return redirect()->route('settings.index')->with('success', 'Kata sandi berhasil diubah!');
     }
 
-    /**
-     * Memperbarui preferensi tema pengguna.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function updateTheme(Request $request)
     {
+        $request->validate([
+            'theme' => ['required', 'in:light,dark,system'],
+        ]);
+
+        $user = Auth::user();
+        $user->theme = $request->theme;
+        $user->save();
+
+        return redirect()->route('settings.index')->with('success', 'Pengaturan tema berhasil diperbarui!');
+    }
+
+    public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'], // Max 2MB
+        ]);
+
         $user = Auth::user();
 
-        $request->validate([
-            'theme' => ['required', 'string', Rule::in(['light', 'dark', 'system'])],
-        ]);
+        // Hapus gambar lama jika ada
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
+        }
 
-        $user->update([
-            'theme' => $request->theme,
-        ]);
+        // Simpan gambar baru
+        $path = $request->file('profile_image')->store('profile_images', 'public');
+        $user->profile_image = $path;
+        $user->save();
 
-        return redirect()->route('settings.index')->with('success', 'Preferensi tema berhasil diperbarui.');
+        return redirect()->route('settings.index')->with('success', 'Foto profil berhasil diunggah!');
     }
 }

@@ -2,7 +2,7 @@
 
 @section('head')
     {{-- Anda bisa menambahkan CSS spesifik untuk halaman pengaturan di sini --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/settings.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
 @endsection
 
 @section('content')
@@ -29,6 +29,30 @@
 
     <div class="row">
         <div class="col-md-8">
+
+            {{-- Bagian Upload Foto Profil --}}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light fw-bold">
+                    <i class="bi bi-image-fill me-2"></i>Foto Profil
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('images/default_profile.png') }}"
+                         alt="Foto Profil" class="img-fluid rounded-circle mb-3 profile-image-preview">
+                    <form action="{{ route('settings.updateProfileImage') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+                        <div class="mb-3">
+                            <label for="profile_image" class="form-label">Unggah Foto Baru</label>
+                            <input class="form-control" type="file" id="profile_image" name="profile_image" accept="image/*">
+                            @error('profile_image')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">Unggah Foto</button>
+                    </form>
+                </div>
+            </div>
+
             {{-- Bagian Edit Profil --}}
             <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-light fw-bold">
@@ -38,7 +62,6 @@
                     <form action="{{ route('settings.updateProfile') }}" method="POST">
                         @csrf
                         @method('patch')
-
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}" required>
@@ -61,7 +84,6 @@
                     <form action="{{ route('settings.updatePassword') }}" method="POST">
                         @csrf
                         @method('patch')
-
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
                             <input type="password" class="form-control" id="current_password" name="current_password" required>
@@ -88,7 +110,6 @@
                     <form action="{{ route('settings.updateTheme') }}" method="POST">
                         @csrf
                         @method('patch')
-
                         <div class="mb-3">
                             <label for="theme" class="form-label">Pilih Tema</label>
                             <select class="form-select" id="theme" name="theme">
@@ -101,35 +122,50 @@
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 @endsection
 
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeSelect = document.getElementById('theme');
-            if (themeSelect) {
-                // Fungsi untuk menerapkan tema
-                const applyTheme = (theme) => {
-                    document.documentElement.setAttribute('data-theme', theme); // Menggunakan data-theme attribute
-                    // Atau, jika Anda lebih suka, Anda bisa menambahkan/menghapus kelas di body
-                    // document.body.classList.remove('theme-light', 'theme-dark', 'theme-system');
-                    // document.body.classList.add('theme-' + theme);
-                };
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeSelect = document.getElementById('theme');
+        if (themeSelect) {
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+            };
 
-                // Terapkan tema saat halaman dimuat (dari nilai di database)
-                const initialTheme = themeSelect.value;
-                applyTheme(initialTheme);
+            const initialTheme = themeSelect.value;
+            applyTheme(initialTheme);
 
-                // Perbarui tema secara dinamis saat pilihan berubah
-                themeSelect.addEventListener('change', function() {
-                    const selectedTheme = this.value;
-                    applyTheme(selectedTheme);
-                    console.log('Tema diubah menjadi:', selectedTheme);
-                });
-            }
-        });
-    </script>
+            themeSelect.addEventListener('change', function () {
+                const selectedTheme = this.value;
+                applyTheme(selectedTheme);
+                console.log('Tema diubah menjadi:', selectedTheme);
+            });
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const profileImageInput = document.getElementById('profile_image');
+        const profileImagePreview = document.querySelector('.profile-image-preview');
+
+        if (profileImageInput && profileImagePreview) {
+            profileImageInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImagePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
+</script>
 @endpush
