@@ -38,13 +38,15 @@ class TransaksiController extends Controller
     {
         $request->validate([
             'meja_id' => [
-                'required',
-                'exists:meja,id',
-                // Custom validation to ensure the selected meja belongs to the current user
+                'required','exists:meja,id',
                 function ($attribute, $value, $fail) {
                     $meja = Meja::find($value);
-                    if ($meja && $meja->user_id !== Auth::id()) {
-                        $fail('Meja yang dipilih tidak valid atau bukan milik Anda.');
+                    if ($meja->user_id !== Auth::id()) {
+                        $fail('Meja tidak valid.');
+                    }
+                    // tambahan pencegah double insert
+                    if ($meja->status === 'digunakan') {
+                        $fail('Meja sudah digunakan. Silakan refresh halaman.');
                     }
                 },
             ],
@@ -71,8 +73,6 @@ class TransaksiController extends Controller
         // Update the table status. Authorization was already confirmed when validating $meja_id.
         $meja->update([
             'status' => 'digunakan',
-            // It's generally better not to store waktu_mulai and waktu_selesai on the meja table
-            // if they are specific to a transaction. These fields are usually only on the transaksi table.
         ]);
     
         return redirect()->route('pesanan.create', ['transaksi_id' => $transaksi->id])

@@ -31,9 +31,23 @@
         </div>
 
         <div class="button-group">
-            <button type="submit" class="btn btn-primary">Mulai Transaksi</button>
+            <button type="submit" id="btnSubmit" class="btn btn-primary">Mulai Transaksi</button>
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const btn  = document.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function () {
+        btn.disabled = true;
+        btn.textContent = 'Memproses...';
+    });
+});
+</script>
+@endpush
