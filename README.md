@@ -101,3 +101,58 @@
    cd system-admin-billiard
 
 2. **Install PHP Dependencies**
+   ```bash
+   composer install
+
+3. **Install NPM Dependencies**
+   ```bash
+   npm install
+
+4. **Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+
+5. **Database Configuration**
+   ```bash
+- Create database in MySQL
+- Update .env file with your database credentials
+
+6. **Run Migrations & Seeders**
+   ```bash
+   php artisan migrate --seed
+
+7. **Build Assets**
+   ```bash
+   npm run build
+   # or for development
+   npm run dev
+8. **Start Development Server**
+   ```bash
+   php artisan serve
+
+🌐 Access Application
+- Local URL: http://localhost:8000
+- Default Admin: admin@system.com / password
+
+📁 Project Structure
+    ```bash
+    system-admin-billiard/
+    ├── app/
+    │   ├── Models/          # Eloquent Models
+    │   ├── Http/
+    │   │   ├── Controllers/ # Application Controllers
+    │   │   └── Middleware/  # Route Middleware
+    ├── resources/
+    │   ├── views/           # Blade Templates
+    │   ├── css/             # Tailwind CSS
+    │   └── js/              # Alpine.js Components
+    ├── routes/
+    │   ├── web.php          # Web Routes
+    │   └── api.php          # API Routes
+    ├── database/
+    │   ├── migrations/      # Database Migrations
+    │   └── seeders/         # Database Seeders
+    └── public/
+        ├── build/           # Vite Build Assets
+        └── storage/         # File Storage
