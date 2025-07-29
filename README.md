@@ -75,7 +75,7 @@
 
 ## 📸 Screenshots
 
-> *Note: Screenshots akan ditambahkan setelah final deployment*
+![Struktur Project](biliar\public\images\dashboard.jpg)
 
 ### 🖼️ Preview Coming Soon
 - **Dashboard Overview**
@@ -114,9 +114,8 @@
    php artisan key:generate
 
 5. **Database Configuration**
-   ```bash
-- Create database in MySQL
-- Update .env file with your database credentials
+    - Create database in MySQL
+    - Update .env file with your database credentials
 
 6. **Run Migrations & Seeders**
    ```bash
@@ -132,8 +131,10 @@
    php artisan serve
 
 🌐 Access Application
-- Local URL: http://localhost:8000
-- Default Admin: admin@system.com / password
+    - Local URL: http://localhost:8000
+
+🤝 Contributing
+Kontribusi sangat terbuka! Silakan fork repository ini dan ajukan pull request untuk perbaikan atau fitur baru. Jangan lupa untuk membuat issue terlebih dahulu jika ada yang ingin didiskusikan.
 
 ## 📁 Project Structure
 ```bash
@@ -156,4 +157,8 @@ system-admin-billiard/
 └── public/
     ├── build/             # Vite Build Assets
     └── storage/           # File Storage
+```
+
+🤝 Contributing
+Kontribusi sangat terbuka! Silakan fork repository ini dan ajukan pull request untuk perbaikan atau fitur baru. Jangan lupa untuk membuat issue terlebih dahulu jika ada yang ingin didiskusikan.
 
