@@ -75,7 +75,7 @@
 
 ## 📸 Screenshots
 
-![Struktur Project](biliar/public/dashboard.jpg)
+![Struktur Project](biliar\public\dashboard.jpg)
 
 ### 🖼️ Preview Coming Soon
 - **Dashboard Overview**
