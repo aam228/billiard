@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&height=100&section=header&text=System%20Admin%20Billiard&fontSize=40&fontAlign=50&fontAlignY=50"/>
-</div>
-
 <h1 align="center">System Admin Billiard</h1>
 
 <p align="center">
