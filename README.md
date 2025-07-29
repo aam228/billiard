@@ -135,24 +135,25 @@
 - Local URL: http://localhost:8000
 - Default Admin: admin@system.com / password
 
-📁 Project Structure
-    ```bash
-    system-admin-billiard/
-    ├── app/
-    │   ├── Models/          # Eloquent Models
-    │   ├── Http/
-    │   │   ├── Controllers/ # Application Controllers
-    │   │   └── Middleware/  # Route Middleware
-    ├── resources/
-    │   ├── views/           # Blade Templates
-    │   ├── css/             # Tailwind CSS
-    │   └── js/              # Alpine.js Components
-    ├── routes/
-    │   ├── web.php          # Web Routes
-    │   └── api.php          # API Routes
-    ├── database/
-    │   ├── migrations/      # Database Migrations
-    │   └── seeders/         # Database Seeders
-    └── public/
-        ├── build/           # Vite Build Assets
-        └── storage/         # File Storage
+## 📁 Project Structure
+```bash
+system-admin-billiard/
+├── app/
+│   ├── Models/            # Eloquent Models
+│   └── Http/
+│       ├── Controllers/   # Application Controllers
+│       └── Middleware/    # Route Middleware
+├── resources/
+│   ├── views/             # Blade Templates
+│   ├── css/               # Tailwind CSS
+│   └── js/                # Alpine.js Components
+├── routes/
+│   ├── web.php            # Web Routes
+│   └── api.php            # API Routes
+├── database/
+│   ├── migrations/        # Database Migrations
+│   └── seeders/           # Database Seeders
+└── public/
+    ├── build/             # Vite Build Assets
+    └── storage/           # File Storage
+
