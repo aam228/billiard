@@ -31,9 +31,9 @@
 **System Admin Billiard** adalah sistem manajemen yang dirancang khusus untuk membantu bisnis billiard dalam mengelola operasional secara efisien. Sistem ini fokus pada akurasi pencatatan transaksi untuk menghindari kesalahan keuangan yang sering terjadi dalam sistem manual.
 
 ### 🎯 Masalah yang Dipecahkan
-- ❌ **Kesalahan pencatatan keuangan** → ✅ **Sistem otomatis dengan tracking real-time**
-- ❌ **Data transaksi tidak terstruktur** → ✅ **Database terpusat dengan laporan detail**
-- ❌ **Kesulitan analisis penjualan** → ✅ **Dashboard analytic yang komprehensif**
+❌ **Kesalahan pencatatan keuangan** → ✅ **Sistem otomatis dengan tracking real-time**
+❌ **Data transaksi tidak terstruktur** → ✅ **Database terpusat dengan laporan detail**
+❌ **Kesulitan analisis penjualan** → ✅ **Dashboard analytic yang komprehensif**
 
 ---
 
