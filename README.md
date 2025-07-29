@@ -74,7 +74,7 @@
 ---
 
 ## 📸 Screenshots
-
+Halaman Dashboard
 ![Struktur Project](public/dashboard.jpg)
 
 ### 🖼️ Preview Coming Soon
