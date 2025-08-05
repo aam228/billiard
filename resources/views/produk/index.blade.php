@@ -1,56 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="app-container"> {{-- Main container for the page content --}}
-    <div class="d-flex justify-content-between align-items-center mb-4"> {{-- Header section with Bootstrap flex utilities --}}
-        <h4 class="section-title">Kelola Makanan</h4> {{-- Using custom section-title for consistent heading style --}}
-        {{-- Button to trigger the Create Product modal --}}
-        <button type="button" class="btn btn-primary custom-btn" data-bs-toggle="modal" data-bs-target="#createProductModal">
-            <i class="bi bi-plus-lg me-1"></i> Tambah Makanan
+<div x-data="productPage()" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+        <h4 class="text-2xl font-bold text-gray-800 dark:text-white">Kelola Makanan</h4>
+        <button type="button" @click="isCreateModalOpen = true" class="btn-primary">
+            <i class="fa-solid fa-plus mr-2"></i>
+            <span>Tambah Makanan</span>
         </button>
     </div>
 
     @if($produks->isEmpty())
-        <div class="custom-alert">Belum ada makanan.</div> {{-- Custom alert for empty state --}}
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md" role="alert">
+            <p>Belum ada makanan yang ditambahkan.</p>
+        </div>
     @else
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4"> {{-- Bootstrap grid for responsive product cards --}}
+        {{-- DIUBAH: Grid dibuat lebih padat dengan lebih banyak kolom di layar besar dan gap lebih kecil --}}
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             @foreach($produks as $produk)
-            <div class="col"> {{-- Column for each product card --}}
-                <div class="card product-card h-100"> {{-- Bootstrap card with custom product-card styling and full height --}}
-                    <div class="product-image-wrapper"> {{-- Custom wrapper for consistent image sizing --}}
-                        @if($produk->gambar)
-                            <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}" class="product-image"> {{-- Custom image class --}}
-                        @else
-                            <div class="image-placeholder"> {{-- Custom placeholder for no image --}}
-                                <span class="bi bi-image"></span> {{-- Bootstrap icon for placeholder --}}
-                                <p>Tidak ada gambar</p>
-                            </div>
-                        @endif
+            {{-- Kartu produk yang didesain ulang --}}
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden flex flex-col group">
+                <div class="aspect-square w-full overflow-hidden">
+                    @if($produk->gambar)
+                        <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    @else
+                        <div class="flex flex-col items-center justify-center h-full bg-gray-100 dark:bg-gray-700 text-gray-400">
+                            <i class="fa-solid fa-image text-4xl"></i>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- DIUBAH: Area info dan aksi digabung, padding dikurangi --}}
+                <div class="p-3 mt-auto flex justify-between items-start">
+                    {{-- Info Nama & Harga --}}
+                    <div>
+                        <h6 class="font-semibold text-sm text-gray-800 dark:text-white truncate" title="{{ $produk->nama_produk }}">{{ $produk->nama_produk }}</h6>
+                        {{-- DIUBAH: Harga dibuat lebih menonjol dengan warna hijau dan ukuran lebih besar --}}
+                        <p class="text-sm font-semibold text-green-500 dark:text-green-400">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
                     </div>
 
-                    <div class="card-body product-info"> {{-- Bootstrap card-body with custom product-info styling --}}
-                        <h6 class="card-title product-name">{{ $produk->nama_produk }}</h6> {{-- Bootstrap card-title with custom product-name styling --}}
-                        <p class="card-text product-price">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p> {{-- Bootstrap card-text with custom product-price styling --}}
-                    </div>
+                    {{-- DIUBAH: Tombol aksi dibuat lebih kecil dan compact --}}            
 
-                    <div class="product-actions-footer"> {{-- Custom footer for action buttons --}}
-                        {{-- Button to trigger the Edit Product modal --}}
-                        {{-- REMOVED onclick="window.location.href='...'" --}}
-                        <button type="button"
-                            class="btn btn-sm custom-edit-btn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editProductModal"
-                            data-id="{{ $produk->id }}"
-                            data-nama="{{ $produk->nama_produk }}"
-                            data-harga="{{ $produk->harga }}"
-                            data-gambar="{{ $produk->gambar }}">
-                            <i class="bi bi-pencil-square me-1"></i> Edit
+                    {{-- Tombol Aksi (Icon) --}}
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button type="button" @click="openEditModal({{ json_encode($produk) }})" 
+                                class="w-7 h-7 flex items-center justify-center text-xs text-white bg-yellow-500 rounded-full hover:bg-yellow-600">
+                            <i class="fa-solid fa-pencil"></i>
                         </button>
-                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?')">
+                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm custom-delete-btn"> {{-- Bootstrap small button with custom delete styling --}}
-                                <i class="bi bi-trash me-1"></i> Hapus
+                            <button type="submit" 
+                                    class="w-7 h-7 flex items-center justify-center text-xs text-white bg-red-600 rounded-full hover:bg-red-700">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
                     </div>
@@ -59,105 +61,70 @@
             @endforeach
         </div>
     @endif
-</div>
 
-<!-- Create Product Modal -->
-<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
-        <div class="modal-content">
-            <div class="modal-header custom-modal-header">
-                <h5 class="modal-title" id="createProductModalLabel">Tambah Makanan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div x-show="isCreateModalOpen" x-cloak x-transition class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+        <div @click.away="isCreateModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+            <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+                <h5 class="text-lg font-bold">Tambah Makanan</h5>
+                <button @click="isCreateModalOpen = false" class="text-2xl">&times;</button>
             </div>
-            <div class="modal-body p-4">
-                <form id="createProductForm" action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+            <div class="p-6">
+                <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
-                    <div class="mb-3">
-                        <label for="create_nama_produk" class="form-label">Nama Makanan</label>
-                        <input type="text" name="nama_produk" id="create_nama_produk" class="form-control" required>
-                        @error('nama_produk')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="create_harga" class="form-label">Harga (Rp)</label>
-                        <input type="text" name="harga" id="create_harga" class="form-control" required> {{-- Changed to type="text" for currency formatting --}}
-                        @error('harga')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="create_gambar" class="form-label">Gambar Produk</label>
-                        <input type="file" name="gambar" id="create_gambar" class="form-control">
-                        @error('gambar')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-arrow-left me-1"></i>Batal
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save2 me-1"></i>Simpan
-                        </button>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="create_nama_produk" class="block text-sm font-medium mb-1">Nama Makanan</label>
+                            <input type="text" name="nama_produk" id="create_nama_produk" class="w-full form-input" required>
+                        </div>
+                        <div>
+                            <label for="create_harga" class="block text-sm font-medium mb-1">Harga (Rp)</label>
+                            <input type="text" name="harga" id="create_harga" class="w-full form-input" required x-mask:dynamic="$money($input, ',', '.', 2)">
+                        </div>
+                        <div>
+                            <label for="create_gambar" class="block text-sm font-medium mb-1">Gambar Produk</label>
+                            <input type="file" name="gambar" id="create_gambar" class="w-full file-input">
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4">
+                            <button type="button" @click="isCreateModalOpen = false" class="btn-secondary">Batal</button>
+                            <button type="submit" class="btn-primary">Simpan</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
-        <div class="modal-content">
-            <div class="modal-header custom-modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Makanan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    
+    <div x-show="isEditModalOpen" x-cloak x-transition class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+        <div @click.away="isEditModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+            <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+                <h5 class="text-lg font-bold">Edit Makanan</h5>
+                <button @click="isEditModalOpen = false" class="text-2xl">&times;</button>
             </div>
-            <div class="modal-body p-4">
-                <form id="editProductForm" method="POST" enctype="multipart/form-data">
+            <div class="p-6">
+                <form @submit.prevent="submitEditForm" enctype="multipart/form-data" id="editProductForm">
                     @csrf
-                    @method('PUT') {{-- This will be dynamically controlled by JS if needed --}}
-
-                    <div class="mb-3">
-                        <label for="edit_nama_produk" class="form-label">Nama Makanan</label>
-                        <input type="text" name="nama_produk" id="edit_nama_produk" class="form-control" required>
-                        @error('nama_produk')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="edit_harga" class="form-label">Harga (Rp)</label>
-                        <input type="text" name="harga" id="edit_harga" class="form-control" required> {{-- Changed to type="text" for currency formatting --}}
-                        @error('harga')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="edit_gambar" class="form-label">Gambar Produk</label>
-                        <input type="file" name="gambar" id="edit_gambar" class="form-control">
-                        <div id="current_gambar_preview" class="image-preview-wrapper d-none">
-                            <img src="" alt="Gambar Produk" class="image-preview w-50 mt-3">
+                    @method('PUT')
+                    <div class="space-y-4">
+                        <div>
+                            <label for="edit_nama_produk" class="block text-sm font-medium mb-1">Nama Makanan</label>
+                            <input type="text" name="nama_produk" id="edit_nama_produk" class="w-full form-input" required x-model="editProduct.nama_produk">
                         </div>
-                        @error('gambar')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-arrow-left me-1"></i>Batal
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save2 me-1"></i>Perbarui
-                        </button>
+                        <div>
+                            <label for="edit_harga" class="block text-sm font-medium mb-1">Harga (Rp)</label>
+                            <input type="text" name="harga" id="edit_harga" class="w-full form-input" required x-model="editProduct.harga" x-mask:dynamic="$money($input, ',', '.', 2)">
+                        </div>
+                        <div>
+                            <label for="edit_gambar" class="block text-sm font-medium mb-1">Gambar Baru (Opsional)</label>
+                            <input type="file" name="gambar" id="edit_gambar" class="w-full file-input">
+                            <div x-show="editProduct.gambar" class="mt-4">
+                                <p class="text-sm mb-2">Gambar saat ini:</p>
+                                <img :src="'/storage/' + editProduct.gambar" class="w-32 h-32 object-cover rounded-md">
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4">
+                            <button type="button" @click="isEditModalOpen = false" class="btn-secondary">Batal</button>
+                            <button type="submit" class="btn-primary">Perbarui</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -165,95 +132,82 @@
     </div>
 </div>
 @endsection
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/produk.css') }}">
-@endpush
 
 @push('scripts')
+{{-- Untuk fungsionalitas masking input harga --}}
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
 <script>
-    function formatRupiah(input) {
-        let value = input.value.replace(/\D/g, '');
-        if (value) {
-            input.value = new Intl.NumberFormat('id-ID').format(value);
-        } else {
-            input.value = '';
-        }
-    }
+function productPage() {
+    return {
+        // State untuk mengontrol modal
+        isCreateModalOpen: false,
+        isEditModalOpen: false,
+        // State untuk menyimpan data produk yang akan diedit
+        editProduct: {
+            id: null,
+            nama_produk: '',
+            harga: '',
+            gambar: null
+        },
 
-    function prepareCurrencyInputs() {
-        const inputs = document.querySelectorAll('input[name="harga"]');
+        // Fungsi untuk membuka modal edit dan mengisi datanya
+        openEditModal(product) {
+            this.editProduct = { ...product }; // Salin data produk ke state
+            this.isEditModalOpen = true;
+        },
 
-        inputs.forEach(input => {
-            input.addEventListener('input', () => formatRupiah(input));
-
-            // Bersihkan titik saat submit agar tidak error di backend
-            input.closest('form').addEventListener('submit', () => {
-                input.value = input.value.replace(/\./g, '');
-            });
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', prepareCurrencyInputs);
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ketika tombol edit ditekan
-        document.querySelectorAll('.custom-edit-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const id = this.dataset.id;
-                const nama = this.dataset.nama;
-                const harga = this.dataset.harga;
-                const gambar = this.dataset.gambar;
-
-                // Isi form edit
-                document.getElementById('edit_nama_produk').value = nama;
-                document.getElementById('edit_harga').value = new Intl.NumberFormat('id-ID').format(harga);
-
-                // Preview gambar jika ada
-                const preview = document.getElementById('current_gambar_preview');
-                const img = preview.querySelector('img');
-
-                if (gambar) {
-                    img.src = `/storage/${gambar}`;
-                    preview.classList.remove('d-none');
-                } else {
-                    preview.classList.add('d-none');
-                    img.src = '';
+        // Fungsi untuk submit form edit via AJAX
+        submitEditForm(event) {
+            const form = event.target;
+            const formData = new FormData(form);
+            const url = `/produk/${this.editProduct.id}`;
+            
+            // Bersihkan format harga sebelum dikirim
+            formData.set('harga', this.editProduct.harga.toString().replace(/\./g, ''));
+            
+            fetch(url, {
+                method: 'POST', // Gunakan POST, karena FormData dengan file tidak didukung baik oleh method PUT
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-
-                // Ubah action form
-                const form = document.getElementById('editProductForm');
-                form.action = `/produk/${id}`;
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    this.isEditModalOpen = false; // Tutup modal dengan Alpine.js
+                    window.location.reload(); // Reload halaman untuk melihat perubahan
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                alert('Gagal memperbarui produk.');
             });
-        });
-    });
-
-    document.getElementById('editProductForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const form = this;
-        const formData = new FormData(form);
-        const id = form.action.split('/').pop();
-        formData.set('harga', formData.get('harga').replace(/\./g, ''));
-
-        fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                // Tutup modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
-                modal.hide();
-
-                // Reload atau update UI langsung
-                window.location.reload(); // bisa diganti update kartu produk langsung kalau mau
-            }
-        })
-        .catch(err => console.error(err));
-    });
+        }
+    };
+}
 </script>
+@endpush
+
+@push('styles')
+<style>
+    .form-input {
+        @apply block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white;
+    }
+    .file-input {
+        @apply block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400;
+    }
+    .btn-primary {
+        @apply inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-200 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition;
+    }
+</style>
 @endpush

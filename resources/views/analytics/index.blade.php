@@ -1,94 +1,83 @@
 @extends('layouts.app')
 
 @section('head')
+    {{-- Chart.js tetap diperlukan --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
 @section('content')
-<div class="container py-4">
-    <h4 class="mb-4">📊 Halaman Analytics</h4>
+{{-- 
+  Komponen Alpine.js utama untuk mengelola state halaman ini:
+  - activeTab: Mengontrol tab mana yang sedang aktif.
+--}}
+<div x-data="{ activeTab: 'ringkasan' }" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h4 class="text-2xl font-bold text-gray-800 dark:text-white border-b pb-4 mb-6 border-gray-200 dark:border-gray-700">
+        <i class="fa-solid fa-chart-pie mr-2"></i> Halaman Analytics
+    </h4>
 
-    <!-- Tab Navigasi -->
-    <ul class="nav nav-tabs mb-4" id="analyticsTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="ringkasan-tab" data-bs-toggle="tab" href="#ringkasan" role="tab">Ringkasan Cepat</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="meja-tab" data-bs-toggle="tab" href="#meja" role="tab">Analisis Meja</a>
-        </li>
-    </ul>
+    <!-- Navigasi Tab dengan Alpine.js -->
+    <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+            <button @click="activeTab = 'ringkasan'"
+                    :class="{
+                        'border-blue-500 text-blue-600 dark:text-blue-400': activeTab === 'ringkasan',
+                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200': activeTab !== 'ringkasan'
+                    }"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                Ringkasan Cepat
+            </button>
+            <button @click="activeTab = 'meja'"
+                    :class="{
+                        'border-blue-500 text-blue-600 dark:text-blue-400': activeTab === 'meja',
+                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200': activeTab !== 'meja'
+                    }"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                Analisis Meja
+            </button>
+        </nav>
+    </div>
 
-    <div class="tab-content" id="analyticsTabContent">
+    <!-- Konten Tab -->
+    <div>
         <!-- Tab Ringkasan -->
-        <div class="tab-pane fade show active" id="ringkasan" role="tabpanel">
-            <div class="row mb-4">
-                <!-- Total Hari Ini -->
-                <div class="col-md-3">
-                    <div class="card shadow-sm bg-success text-white">
-                        <div class="card-body">
-                            <h6 class="mb-1">Total Hari Ini</h6>
-                            <h4>Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}</h4>
-                        </div>
-                    </div>
+        <div x-show="activeTab === 'ringkasan'" x-transition>
+            {{-- Kartu Statistik Cepat --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-green-500 text-white p-5 rounded-lg shadow-lg">
+                    <h6 class="text-sm font-medium uppercase">Total Hari Ini</h6>
+                    <h4 class="text-2xl font-bold mt-1">Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}</h4>
                 </div>
-                <!-- Total Bulan Ini -->
-                <div class="col-md-3">
-                    <div class="card shadow-sm bg-primary text-white">
-                        <div class="card-body">
-                            <h6 class="mb-1">Total Bulan Ini</h6>
-                            <h4>Rp {{ number_format($pendapatanBulanIni, 0, ',', '.') }}</h4>
-                        </div>
-                    </div>
+                <div class="bg-blue-500 text-white p-5 rounded-lg shadow-lg">
+                    <h6 class="text-sm font-medium uppercase">Total Bulan Ini</h6>
+                    <h4 class="text-2xl font-bold mt-1">Rp {{ number_format($pendapatanBulanIni, 0, ',', '.') }}</h4>
                 </div>
-                <!-- Jumlah Transaksi -->
-                <div class="col-md-3">
-                    <div class="card shadow-sm bg-info text-white">
-                        <div class="card-body">
-                            <h6 class="mb-1">Jumlah Transaksi</h6>
-                            <h4>{{ $jumlahTransaksi }}</h4>
-                        </div>
-                    </div>
+                <div class="bg-sky-500 text-white p-5 rounded-lg shadow-lg">
+                    <h6 class="text-sm font-medium uppercase">Jumlah Transaksi</h6>
+                    <h4 class="text-2xl font-bold mt-1">{{ $jumlahTransaksi }}</h4>
                 </div>
-                <!-- Rata-rata Durasi -->
-                <div class="col-md-3">
-                    <div class="card shadow-sm bg-warning text-dark">
-                        <div class="card-body">
-                            <h6 class="mb-1">Rata-rata Durasi</h6>
-                            <h4>{{ number_format($rataRataDurasi, 1) }} jam</h4>
-                        </div>
-                    </div>
+                <div class="bg-yellow-400 text-gray-800 p-5 rounded-lg shadow-lg">
+                    <h6 class="text-sm font-medium uppercase">Rata-rata Durasi</h6>
+                    <h4 class="text-2xl font-bold mt-1">{{ number_format($rataRataDurasi, 1) }} jam</h4>
                 </div>
             </div>
 
-            <!-- Grafik Pendapatan Harian -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h6>📈 Grafik Pendapatan Harian</h6>
-                    <canvas id="chartPendapatan"></canvas>
-                </div>
+            {{-- Grafik Pendapatan Harian --}}
+            <div class="bg-white dark:bg-gray-900 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md p-6">
+                <h6 class="font-semibold text-gray-800 dark:text-white mb-4"><i class="fa-solid fa-arrow-trend-up mr-2"></i>Grafik Pendapatan Harian</h6>
+                <canvas id="chartPendapatan"></canvas>
             </div>
         </div>
 
         <!-- Tab Analisis Meja -->
-        <div class="tab-pane fade" id="meja" role="tabpanel">
-            <div class="row">
-                <!-- Pendapatan per Meja -->
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h6>💰 Pendapatan per Meja</h6>
-                            <canvas id="chartMeja"></canvas>
-                        </div>
-                    </div>
+        <div x-show="activeTab === 'meja'" x-transition>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md p-6">
+                    <h6 class="font-semibold text-gray-800 dark:text-white mb-4"><i class="fa-solid fa-table-cells mr-2"></i>Pendapatan per Meja</h6>
+                    <canvas id="chartMeja"></canvas>
                 </div>
-                <!-- Jam Sibuk -->
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h6>⏰ Jam Sibuk</h6>
-                            <canvas id="chartJamSibuk"></canvas>
-                        </div>
-                    </div>
+                <div class="bg-white dark:bg-gray-900 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md p-6">
+                    <h6 class="font-semibold text-gray-800 dark:text-white mb-4"><i class="fa-solid fa-clock mr-2"></i>Jam Sibuk</h6>
+                    <canvas id="chartJamSibuk"></canvas>
                 </div>
             </div>
         </div>
@@ -96,35 +85,18 @@
 </div>
 @endsection
 
-@push('styles')
-    <style>
-        /* Style untuk nav-link aktif */
-        .nav-tabs .nav-link.active {
-            color: white !important; /* Membuat teks menjadi putih */
-            /* Anda mungkin juga ingin mengatur warna latar belakang agar teks putih terlihat jelas */
-            /* background-color: #0d6efd; */ /* Contoh warna biru primary Bootstrap */
-        }
-
-        /* Jika Anda ingin juga mengubah warna teks pada hover atau fokus ketika aktif */
-        .nav-tabs .nav-link.active:hover,
-        .nav-tabs .nav-link.active:focus {
-            color: white !important;
-        }
-
-        /* Optional: Menyesuaikan warna latar belakang tab aktif jika belum diatur */
-        .nav-tabs .nav-link.active {
-            background-color: var(--bs-primary); /* Menggunakan warna primary Bootstrap */
-            border-color: var(--bs-primary); /* Menyamakan border dengan background */
-        }
-    </style>
-@endpush
-
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
     // Data dari controller (PHP -> JavaScript)
     const pendapatanPerHari = @json($pendapatanPerHari);
     const pendapatanPerMeja = @json($pendapatanPerMeja);
     const jamSibuk = @json($jamSibuk);
+    
+    // Konfigurasi umum untuk Chart.js agar sesuai dengan dark mode
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Chart.defaults.color = isDarkMode ? '#9ca3af' : '#6b7280';
+    Chart.defaults.borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
     // Grafik Pendapatan Harian
     const ctxPendapatan = document.getElementById('chartPendapatan').getContext('2d');
@@ -135,15 +107,15 @@
             datasets: [{
                 label: 'Pendapatan',
                 data: pendapatanPerHari.map(item => item.total),
-                borderColor: '#28a745',
-                backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                borderColor: '#22c55e', // green-500
+                backgroundColor: 'rgba(34, 197, 94, 0.2)',
                 fill: true,
                 tension: 0.3
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { display: true } }
+            plugins: { legend: { display: false } }
         }
     });
 
@@ -152,16 +124,18 @@
     new Chart(ctxMeja, {
         type: 'bar',
         data: {
-            labels: @json($pendapatanPerMeja->pluck('nama_meja')), // tampilkan nama_meja
+            labels: pendapatanPerMeja.map(item => item.nama_meja),
             datasets: [{
                 label: 'Pendapatan',
-                data: @json($pendapatanPerMeja->pluck('total')), // datanya dari SUM(total)
-                backgroundColor: '#fd7e14'
+                data: pendapatanPerMeja.map(item => item.total),
+                backgroundColor: '#3b82f6', // blue-500
+                borderRadius: 4
             }]
         },
         options: {
             responsive: true,
-            indexAxis: 'y' // bikin grafik horizontal
+            indexAxis: 'y',
+            plugins: { legend: { display: false } }
         }
     });
 
@@ -174,12 +148,15 @@
             datasets: [{
                 label: 'Jumlah Transaksi',
                 data: jamSibuk.map(item => item.jumlah),
-                backgroundColor: '#6f42c1'
+                backgroundColor: '#8b5cf6', // violet-500
+                borderRadius: 4
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            plugins: { legend: { display: false } }
         }
     });
+});
 </script>
 @endpush
