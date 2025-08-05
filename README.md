@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&height=100&section=header&text=System%20Admin%20Billiard&fontSize=40&fontAlign=50&fontAlignY=50"/>
-</div>
-
 <h1 align="center">System Admin Billiard</h1>
 
 <p align="center">
@@ -13,6 +9,7 @@
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/>
 </p>
 
 ---
@@ -34,9 +31,9 @@
 **System Admin Billiard** adalah sistem manajemen yang dirancang khusus untuk membantu bisnis billiard dalam mengelola operasional secara efisien. Sistem ini fokus pada akurasi pencatatan transaksi untuk menghindari kesalahan keuangan yang sering terjadi dalam sistem manual.
 
 ### 🎯 Masalah yang Dipecahkan
-- ❌ **Kesalahan pencatatan keuangan** → ✅ **Sistem otomatis dengan tracking real-time**
-- ❌ **Data transaksi tidak terstruktur** → ✅ **Database terpusat dengan laporan detail**
-- ❌ **Kesulitan analisis penjualan** → ✅ **Dashboard analytic yang komprehensif**
+❌ **Kesalahan pencatatan keuangan** → ✅ **Sistem otomatis dengan tracking real-time**  
+❌ **Data transaksi tidak terstruktur** → ✅ **Database terpusat dengan laporan detail**  
+❌ **Kesulitan analisis penjualan** → ✅ **Dashboard analytic yang komprehensif**
 
 ---
 
@@ -74,8 +71,8 @@
 ---
 
 ## 📸 Screenshots
-
-![Struktur Project](biliar\public\images\dashboard.jpg)
+Halaman Dashboard
+![Struktur Project](public/dashboard.jpg)
 
 ### 🖼️ Preview Coming Soon
 - **Dashboard Overview**
