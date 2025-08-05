@@ -72,7 +72,7 @@
 
 ## 📸 Screenshots
 Halaman Dashboard
-![Struktur Project](public/dashboard.jpg)
+![Struktur Project](billiard/dashboard.jpg)
 
 ### 🖼️ Preview Coming Soon
 - **Dashboard Overview**
