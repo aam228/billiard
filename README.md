@@ -72,7 +72,7 @@
 
 ## 📸 Screenshots
 Halaman Dashboard
-![Struktur Project](dashboard.jpg)
+![Struktur Project](dashboard.png)
 
 ### 🖼️ Preview Coming Soon
 - **Dashboard Overview**
