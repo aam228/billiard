@@ -97,33 +97,34 @@ Halaman Dashboard
    git clone https://github.com/[your-username]/system-admin-billiard.git
    cd system-admin-billiard
 
-2. **Install PHP Dependencies**
+2. **Install semua dependency PHP, salin file environment, dan buat kunci aplikasi**
    ```bash
    composer install
-
-3. **Install NPM Dependencies**
-   ```bash
-   npm install
-
-4. **Environment Setup**
-   ```bash
-   cp .env.example .env
+   copy .env.example .env
    php artisan key:generate
 
-5. **Database Configuration**
-    - Create database in MySQL
-    - Update .env file with your database credentials
+3. **Konfigurasi Database**
+   - Buat sebuah database baru di MySQL (misalnya, db_billiard).
+   - Buka file .env dan sesuaikan baris DB_DATABASE, DB_USERNAME, dan DB_PASSWORD dengan kredensial database Anda.
 
-6. **Run Migrations & Seeders**
+4. **Migrasi & Seeding Database**
+   Jalankan perintah ini untuk membuat semua tabel dan mengisi data awal (termasuk akun admin default).
    ```bash
    php artisan migrate --seed
 
-7. **Build Assets**
+5. **Buat Storage Link**
+   Perintah ini penting untuk membuat gambar yang diunggah (seperti foto profil) dapat diakses dari web.
    ```bash
-   npm run build
-   # or for development
-   npm run dev
-8. **Start Development Server**
+   php artisan storage:link
+
+6. **Setup Frontend**
+   Install semua dependency JavaScript & CSS, lalu compile aset-aset tersebut.
+   ```bash
+   npm install
+   npm run dev 
+
+7. **Jalankan Server**
+   Buka terminal baru dan jalankan server pengembangan Laravel.
    ```bash
    php artisan serve
 
