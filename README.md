@@ -74,12 +74,6 @@
 Halaman Dashboard
 ![Struktur Project](dashboard.png)
 
-### 🖼️ Preview Coming Soon
-- **Dashboard Overview**
-- **Table Management Interface**
-- **Transaction History**
-- **Product Management**
-
 ---
 
 ## 🚀 Installation
