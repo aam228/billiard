@@ -88,8 +88,8 @@ Halaman Dashboard
 
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/[your-username]/system-admin-billiard.git
-   cd system-admin-billiard
+   git clone https://github.com/[your-username]/billiard.git
+   cd billiard
 
 2. **Install semua dependency PHP, salin file environment, dan buat kunci aplikasi**
    ```bash
