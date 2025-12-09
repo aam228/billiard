@@ -15,7 +15,7 @@ class MejaSeeder extends Seeder
         // Anda bisa langsung menetapkan user_id = 1, tapi sebaiknya tetap pastikan user dengan ID 1 ada
         // atau buat jika belum ada untuk menghindari error.
         // Opsi 1: Pastikan user_id 1 ada
-        $userId = 1;
+        $userId = 2;
         $userExists = User::find($userId);
 
         // Matikan foreign key checks sementara

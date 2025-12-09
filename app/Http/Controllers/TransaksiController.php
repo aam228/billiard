@@ -14,7 +14,6 @@ class TransaksiController extends Controller
 {
     public function histori()
     {
-        // Filter transactions by the logged-in user's ID for security and data isolation
         $transaksis = Auth::user()->transaksis()
                             ->with('meja')
                             ->orderBy('created_at', 'desc')
@@ -26,7 +25,6 @@ class TransaksiController extends Controller
     {
         $meja = Meja::findOrFail($meja_id);
 
-        // Authorization: Ensure the table belongs to the logged-in user before showing the form
         if ($meja->user_id !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk membuat transaksi di meja ini.');
         }
@@ -44,7 +42,6 @@ class TransaksiController extends Controller
                     if ($meja->user_id !== Auth::id()) {
                         $fail('Meja tidak valid.');
                     }
-                    // tambahan pencegah double insert
                     if ($meja->status === 'digunakan') {
                         $fail('Meja sudah digunakan. Silakan refresh halaman.');
                     }
@@ -60,7 +57,6 @@ class TransaksiController extends Controller
         $waktu_selesai = $waktu_mulai->copy()->addHours($durasi);
         $total_harga = $meja->tarif_per_jam * $durasi;
     
-        // Create the transaction and automatically assign the user_id via the relationship
         $transaksi = Auth::user()->transaksis()->create([
             'meja_id' => $meja->id,
             'nama_pelanggan' => $request->nama_pelanggan,
@@ -70,7 +66,6 @@ class TransaksiController extends Controller
             'waktu_selesai' => $waktu_selesai,
         ]);
     
-        // Update the table status. Authorization was already confirmed when validating $meja_id.
         $meja->update([
             'status' => 'digunakan',
         ]);
@@ -83,46 +78,52 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::findOrFail($transaksi_id);
 
-        // Authorization: Ensure this transaction belongs to the logged-in user
         if ($transaksi->user_id !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk menyelesaikan transaksi ini.');
         }
 
         $transaksi->update([
             'waktu_selesai' => now(),
-            // Add 'status' => 'selesai' if you have a status column in your transaksi table
         ]);
 
-        // Ensure the associated table also belongs to the logged-in user before updating its status.
-        // This check is redundant if the transaction already belongs to the user and the meja relationship is correctly set up,
-        // but it adds an extra layer of safety.
         if ($transaksi->meja->user_id !== Auth::id()) {
              abort(403, 'Anda tidak memiliki akses untuk mengubah status meja terkait.');
         }
 
         $transaksi->meja->update([
             'status' => 'tersedia',
-            'waktu_mulai' => null, // Reset these fields on the table if they exist there
+            'waktu_mulai' => null,
             'waktu_selesai' => null,
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Transaksi berhasil diselesaikan.');
     }
 
-    public function hapus(Transaksi $transaksi)
+    public function destroy(Transaksi $transaksi)
     {
-        // Authorization: Ensure this transaction belongs to the logged-in user
         if ($transaksi->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki akses untuk menghapus transaksi ini.');
+            return response()->json([
+                'message' => 'Anda tidak memiliki akses untuk menghapus transaksi ini.'
+            ], 403);
         }
 
-        $transaksi->delete();
-        return redirect()->route('transaksi.histori')->with('success', 'Transaksi berhasil dihapus.');
+        try {
+            $transaksi->delete();
+
+            return response()->json([
+                'message' => 'Transaksi berhasil dihapus.'
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error("Gagal menghapus Transaksi ID {$transaksi->id}: " . $e->getMessage()); 
+            return response()->json([
+                'message' => 'Gagal menghapus transaksi. Terjadi kesalahan server.'
+            ], 500); 
+        }
     }
 
     public function laporan(Request $request)
     {
-        // Filter report data by the logged-in user's ID for security and data isolation
         $query = Auth::user()->transaksis()->with('meja');
 
         if ($request->filled('tanggal_mulai') && $request->filled('tanggal_selesai')) {
@@ -137,7 +138,6 @@ class TransaksiController extends Controller
         }
 
         if ($request->filled('meja_id')) {
-            // Validation: Ensure the selected meja for filtering belongs to the current user
             $mejaIdsOwnedByUser = Auth::user()->mejas()->pluck('id');
             if (!$mejaIdsOwnedByUser->contains($request->meja_id)) {
                  abort(403, 'Meja yang dipilih tidak valid atau bukan milik Anda.');
@@ -147,8 +147,7 @@ class TransaksiController extends Controller
 
         $transaksis = $query->orderBy('created_at', 'desc')->get();
         $totalPendapatan = $transaksis->sum('total_harga');
-        
-        // Tables displayed in the report also need to be filtered per user
+
         $mejas = Auth::user()->mejas()->get();
 
         return view('transaksi.laporan', compact('transaksis', 'totalPendapatan', 'mejas'));
@@ -156,7 +155,6 @@ class TransaksiController extends Controller
 
     public function cetakLaporan(Request $request)
     {
-        // Filter report data by the logged-in user's ID for security and data isolation
         $query = Auth::user()->transaksis()->with('meja');
     
         if ($request->filled('tanggal_mulai') && $request->filled('tanggal_selesai')) {
@@ -171,7 +169,6 @@ class TransaksiController extends Controller
         }
     
         if ($request->filled('meja_id')) {
-            // Validation: Ensure the selected meja for filtering belongs to the current user
             $mejaIdsOwnedByUser = Auth::user()->mejas()->pluck('id');
             if (!$mejaIdsOwnedByUser->contains($request->meja_id)) {
                  abort(403, 'Meja yang dipilih tidak valid atau bukan milik Anda.');
@@ -214,16 +211,13 @@ class TransaksiController extends Controller
     public function autoSelesai($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        
-        // Authorization: Ensure this transaction belongs to the logged-in user
+
         if ($transaksi->user_id !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk menyelesaikan transaksi ini.');
         }
 
-        // Check if the transaction is actually due to finish
         if (now()->greaterThanOrEqualTo($transaksi->waktu_selesai)) {
             $transaksi->update([
-                // Add 'status' => 'selesai' if you have a status column in your transaksi table
             ]);
             if ($transaksi->meja->user_id !== Auth::id()) {
                  abort(403, 'Anda tidak memiliki akses untuk mengubah status meja terkait.');

@@ -14,9 +14,9 @@
                 </p>
             </div>
 
-            <form action="{{ route('transaksi.store') }}" method="POST">
+            <form action="{{ route('transaksi.store') }}" method="POST" id="form-transaksi">
                 @csrf
-                <input type="hidden" name="meja_id" value="{{ $meja->id }}">
+                <input type="hidden" name="meja_id" value="{{ $meja->id }}" id="meja-id">
 
                 <div class="space-y-6">
                     <div>
@@ -62,13 +62,65 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    const btn  = document.querySelector('button[type="submit"]');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form-transaksi');
+    
+    form.addEventListener('submit', async function(e) {
+        // Tidak preventDefault dulu, biar form tetap submit jika JS error
+        
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        
+        // Cek apakah ini AJAX request
+        if (!confirm('Buat transaksi?')) {
+            e.preventDefault(); // Untuk testing, nanti dihapus
+        }
 
-    form.addEventListener('submit', function () {
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses...`;
+        e.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                // Redirect ke dashboard dengan param
+                window.location.href = data.redirect;
+            } else {
+                // Tampilkan error validation
+                if (data.errors) {
+                    Object.keys(data.errors).forEach(field => {
+                        const input = document.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.className = 'invalid-feedback text-danger';
+                            errorDiv.textContent = data.errors[field][0];
+                            input.parentNode.appendChild(errorDiv);
+                        }
+                    });
+                }
+                
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Simpan Transaksi';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan sistem');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Simpan Transaksi';
+        }
+        */
     });
 });
 </script>

@@ -15,7 +15,7 @@
     </div>
 
     {{-- Kartu Statistik --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-6">
         <div class="bg-white dark:bg-zinc-900/50 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md p-5 border-t-4 border-green-500">
             <div class="flex justify-between items-start">
                 <div>
@@ -62,8 +62,12 @@
     @if($mejas->count() > 0)
     {{-- Kartu Meja --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @foreach ($mejas as $meja)
-        <div class="bg-white dark:bg-zinc-900/50 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md flex flex-col h-full">
+    @foreach ($mejas as $meja)
+        <div 
+            class="bg-white dark:bg-zinc-900/50 dark:ring-1 dark:ring-white/10 rounded-lg shadow-md flex flex-col h-full"
+            data-meja-id="{{ $meja->id }}"
+            data-tarif-per-jam="Rp {{ number_format($meja->tarif_per_jam, 0, ',', '.') }}"
+        >
             <div class="flex justify-between items-center p-4 border-b dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 rounded-t-lg">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-circle text-xs {{ $meja->status == 'digunakan' ? 'text-orange-500 animate-pulse' : 'text-green-500' }}"></i>
@@ -153,13 +157,19 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Fungsi Countdown (tidak berubah, karena Vanilla JS)
     const countdownElements = document.querySelectorAll('[id^="countdown-"]');
+
     countdownElements.forEach(function(element) {
         const waktuSelesai = element.getAttribute('data-waktuselesai');
         if (waktuSelesai) {
             const endTime = new Date(waktuSelesai).getTime();
-            const interval = setInterval(function() {
+            const card = element.closest('.bg-white'); // Kartu Meja
+
+            // Ambil URL Selesaikan dari dropdown sebelum interval dimulai
+            const selesaiLink = card.querySelector('a[href*="/transaksi/"][href*="/selesai"]');
+            const finishUrl = selesaiLink ? selesaiLink.href : null;
+
+            const interval = setInterval(async function() {
                 const now = new Date().getTime();
                 const distance = endTime - now;
 
@@ -167,16 +177,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(interval);
                     element.innerHTML = "Waktu Habis";
                     
-                    // --- PERUBAHAN LOGIKA ---
-                    // Temukan link 'Selesaikan' di dalam card yang sama
-                    const card = element.closest('.bg-white'); // Cari parent card
-                    const selesaiLink = card.querySelector('a[href*="/transaksi/"][href*="/selesai"]');
-                    
-                    if (selesaiLink && selesaiLink.href) {
-                        // Langsung redirect ke URL, tidak perlu simulasi klik dropdown
-                        window.location.href = selesaiLink.href;
+                    if (finishUrl) {
+                        try {
+                            const response = await fetch(finishUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.ok) {
+                                console.log('Transaksi selesai di backend. Memperbarui UI.');
+
+                                updateMejaCard(card);
+                            } else {
+                                console.error('Gagal menyelesaikan transaksi di backend:', response.statusText);
+                                location.reload();
+                            }
+
+                        } catch (error) {
+                            console.error('Error saat memanggil endpoint selesai:', error);
+                            location.reload();
+                        }
                     } else {
-                        // Fallback jika link tidak ditemukan, refresh halaman
                         location.reload();
                     }
                     return;
@@ -189,6 +213,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 1000);
         }
     });
+    
+    function updateMejaCard(card) {
+        const tarifPerJam = 'Rp 50.000';
+
+        const statusCircle = card.querySelector('.fa-circle');
+        if (statusCircle) {
+            statusCircle.classList.remove('text-orange-500', 'animate-pulse');
+            statusCircle.classList.add('text-green-500');
+        }
+
+        const statusBadge = card.querySelector('.px-2.py-1');
+        if (statusBadge) {
+             statusBadge.classList.remove('text-orange-800', 'bg-orange-100', 'dark:bg-orange-900/50', 'dark:text-orange-300');
+             statusBadge.classList.add('text-green-800', 'bg-green-100', 'dark:bg-green-900/50', 'dark:text-green-300');
+             statusBadge.textContent = 'Tersedia';
+        }
+
+        const dropdownContent = card.querySelector('.absolute.right-0.mt-2');
+        if (dropdownContent) {
+            dropdownContent.innerHTML = `
+                <a href="/transaksi/create/${getMejaId(card)}" class="block px-4 py-2 text-sm text-green-600 hover:bg-green-50 dark:hover:bg-green-900/50">Mulai Transaksi</a>
+            `;
+        }
+
+        const contentArea = card.querySelector('.border-t.dark\\:border-zinc-700.pt-4');
+        if (contentArea) {
+            contentArea.innerHTML = `
+                <div class="space-y-3 text-sm mb-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-zinc-500 dark:text-zinc-400 font-medium"><i class="fas fa-money-bill-wave w-4 mr-2"></i>Tarif/Jam</span>
+                        <span class="font-bold text-green-600 dark:text-green-500">${tarifPerJam}</span>
+                    </div>
+                </div>
+                <a href="/transaksi/create/${getMejaId(card)}"
+                class="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
+                    <i class="fas fa-play"></i>
+                    Pesan Meja
+                </a>
+            `;
+        }
+        
+    }
+
+    function getMejaId(card) {
+        return card.getAttribute('data-meja-id'); 
+    }
 });
 </script>
 @endpush

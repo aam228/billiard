@@ -15,10 +15,8 @@
             <p>Belum ada makanan yang ditambahkan.</p>
         </div>
     @else
-        {{-- DIUBAH: Grid dibuat lebih padat dengan lebih banyak kolom di layar besar dan gap lebih kecil --}}
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             @foreach($produks as $produk)
-            {{-- Kartu produk yang didesain ulang --}}
             <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden flex flex-col group">
                 <div class="aspect-square w-full overflow-hidden">
                     @if($produk->gambar)
@@ -29,19 +27,11 @@
                         </div>
                     @endif
                 </div>
-
-                {{-- DIUBAH: Area info dan aksi digabung, padding dikurangi --}}
                 <div class="p-3 mt-auto flex justify-between items-start">
-                    {{-- Info Nama & Harga --}}
                     <div>
                         <h6 class="font-semibold text-sm text-gray-800 dark:text-white truncate" title="{{ $produk->nama_produk }}">{{ $produk->nama_produk }}</h6>
-                        {{-- DIUBAH: Harga dibuat lebih menonjol dengan warna hijau dan ukuran lebih besar --}}
                         <p class="text-sm font-semibold text-green-500 dark:text-green-400">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
                     </div>
-
-                    {{-- DIUBAH: Tombol aksi dibuat lebih kecil dan compact --}}            
-
-                    {{-- Tombol Aksi (Icon) --}}
                     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <button type="button" @click="openEditModal({{ json_encode($produk) }})" 
                                 class="w-7 h-7 flex items-center justify-center text-xs text-white bg-yellow-500 rounded-full hover:bg-yellow-600">
@@ -62,6 +52,7 @@
         </div>
     @endif
 
+    {{-- Modal Tambah --}}
     <div x-show="isCreateModalOpen" x-cloak x-transition class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
         <div @click.away="isCreateModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
             <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
@@ -78,7 +69,10 @@
                         </div>
                         <div>
                             <label for="create_harga" class="block text-sm font-medium mb-1">Harga (Rp)</label>
-                            <input type="text" name="harga" id="create_harga" class="w-full form-input" required x-mask:dynamic="$money($input, ',', '.', 2)">
+                            {{-- Pakai Alpine Mask --}}
+                            <input type="text" name="harga" id="create_harga" 
+                                   class="w-full form-input format-rupiah" required 
+                                   x-mask:dynamic="$money($input, ',', '.', 0)">
                         </div>
                         <div>
                             <label for="create_gambar" class="block text-sm font-medium mb-1">Gambar Produk</label>
@@ -94,6 +88,7 @@
         </div>
     </div>
     
+    {{-- Modal Edit --}}
     <div x-show="isEditModalOpen" x-cloak x-transition class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
         <div @click.away="isEditModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
             <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
@@ -111,7 +106,11 @@
                         </div>
                         <div>
                             <label for="edit_harga" class="block text-sm font-medium mb-1">Harga (Rp)</label>
-                            <input type="text" name="harga" id="edit_harga" class="w-full form-input" required x-model="editProduct.harga" x-mask:dynamic="$money($input, ',', '.', 2)">
+                            {{-- Pakai Alpine Mask --}}
+                            <input type="text" name="harga" id="edit_harga" 
+                                   class="w-full form-input format-rupiah" required 
+                                   x-model="editProduct.harga" 
+                                   x-mask:dynamic="$money($input, ',', '.', 0)">
                         </div>
                         <div>
                             <label for="edit_gambar" class="block text-sm font-medium mb-1">Gambar Baru (Opsional)</label>
@@ -134,66 +133,61 @@
 @endsection
 
 @push('scripts')
-{{-- Untuk fungsionalitas masking input harga --}}
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
 <script>
 function productPage() {
     return {
-        // State untuk mengontrol modal
         isCreateModalOpen: false,
         isEditModalOpen: false,
-        // State untuk menyimpan data produk yang akan diedit
-        editProduct: {
-            id: null,
-            nama_produk: '',
-            harga: '',
-            gambar: null
-        },
+        editProduct: { id: null, nama_produk: '', harga: '', gambar: null },
 
-        // Fungsi untuk membuka modal edit dan mengisi datanya
         openEditModal(product) {
-            this.editProduct = { ...product }; // Salin data produk ke state
+            this.editProduct = { ...product };
             this.isEditModalOpen = true;
         },
 
-        // Fungsi untuk submit form edit via AJAX
         submitEditForm(event) {
             const form = event.target;
             const formData = new FormData(form);
             const url = `/produk/${this.editProduct.id}`;
-            
-            // Bersihkan format harga sebelum dikirim
+
+            // Bersihkan titik sebelum submit
             formData.set('harga', this.editProduct.harga.toString().replace(/\./g, ''));
-            
+
             fetch(url, {
-                method: 'POST', // Gunakan POST, karena FormData dengan file tidak didukung baik oleh method PUT
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json',
                 },
                 body: formData
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    this.isEditModalOpen = false; // Tutup modal dengan Alpine.js
-                    window.location.reload(); // Reload halaman untuk melihat perubahan
+                    this.isEditModalOpen = false;
+                    window.location.reload();
                 }
             })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                alert('Gagal memperbarui produk.');
-            });
+            .catch(() => alert('Gagal memperbarui produk.'));
         }
     };
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.format-rupiah');
+    inputs.forEach(input => {
+        input.addEventListener('input', function () {
+            let value = this.value.replace(/\D/g, '');
+            this.value = value ? new Intl.NumberFormat('id-ID').format(value) : '';
+        });
+        input.closest('form').addEventListener('submit', function () {
+            input.value = input.value.replace(/\./g, '');
+        });
+    });
+});
 </script>
 @endpush
+
 
 @push('styles')
 <style>

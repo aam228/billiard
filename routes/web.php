@@ -8,7 +8,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PesananMakananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\SettingsController; // Make sure this is imported
+use App\Http\Controllers\SettingsController; 
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -36,15 +36,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('transaksi')->controller(TransaksiController::class)->group(function () {
         Route::get('create/{meja_id}', 'create')->name('transaksi.create');
         Route::post('/', 'store')->name('transaksi.store');
-        Route::get('selesai/{transaksi_id}', 'selesai')->name('transaksi.selesai');
-        Route::delete('{transaksi}', 'hapus')->name('transaksi.hapus');
+        Route::post('selesai/{transaksi_id}', 'selesai')->name('transaksi.selesai');
+        Route::delete('{transaksi}', 'destroy')->name('transaksi.destroy');
         Route::get('histori', 'histori')->name('transaksi.histori');
 
         // Laporan dan Cetak Laporan
         Route::get('laporan', 'laporan')->name('transaksi.laporan');
         Route::get('laporan/cetak', 'cetakLaporan')->name('transaksi.cetak');
         
-        // Auto Selesai - Consider if this should be a web route or an API route/scheduled task
         Route::post('auto-selesai/{id}', 'autoSelesai')->name('transaksi.autoSelesai');
     });
 
