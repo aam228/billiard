@@ -14,43 +14,43 @@
 
 ---
 
-## 📋 Table of Contents
-- [🎯 Overview](#-overview)
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#-tech-stack)
-- [📸 Screenshots](#-screenshots)
-- [🚀 Installation](#-installation)
-- [📁 Project Structure](#-project-structure)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+## Table of Contents
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Screenshots](#-screenshots)
+- [Installation](#-installation)
+- [Project Structure](#-project-structure)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
-## 🎯 Overview
+## Overview
 
 **System Admin Billiard** adalah sistem manajemen yang dirancang khusus untuk membantu bisnis billiard dalam mengelola operasional secara efisien. Sistem ini fokus pada akurasi pencatatan transaksi untuk menghindari kesalahan keuangan yang sering terjadi dalam sistem manual.
 
-### 🎯 Masalah yang Dipecahkan
+### Masalah yang Dipecahkan
 ❌ **Kesalahan pencatatan keuangan** → ✅ **Sistem otomatis dengan tracking real-time**  
 ❌ **Data transaksi tidak terstruktur** → ✅ **Database terpusat dengan laporan detail**  
 ❌ **Kesulitan analisis penjualan** → ✅ **Dashboard analytic yang komprehensif**
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| 🏓 **Manajemen Meja** | Mengelola status meja (tersedia/dipakai/maintenance) |
-| 💳 **Tracking Transaksi** | Pencatatan transaksi berbasis meja dengan detail lengkap |
-| 🛒 **Pemesanan Produk** | Order makanan/minuman langsung dari meja transaksi |
-| 📦 **Manajemen Produk** | CRUD produk dengan kategori dan stok |
-| 📊 **Analytic Dashboard** | Visualisasi data penjualan harian, mingguan, bulanan |
-| 🖥️ **Desktop Optimized** | Interface yang optimal untuk penggunaan di kasir |
+| **Manajemen Meja** | Mengelola status meja (tersedia/dipakai/maintenance) |
+|  **Tracking Transaksi** | Pencatatan transaksi berbasis meja dengan detail lengkap |
+|  **Pemesanan Produk** | Order makanan/minuman langsung dari meja transaksi |
+|  **Manajemen Produk** | CRUD produk dengan kategori dan stok |
+|  **Analytic Dashboard** | Visualisasi data penjualan harian, mingguan, bulanan |
+|  **Desktop Optimized** | Interface yang optimal untuk penggunaan di kasir |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Laravel 11** - PHP Framework
@@ -70,21 +70,21 @@
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 Halaman Dashboard
 ![Struktur Project](dashboard.png)
 
 ---
 
-## 🚀 Installation
+## Installation
 
-### 📋 Prerequisites
+### Prerequisites
 - PHP 8.2 or higher
 - Composer
 - Node.js 18+ & NPM
 - MySQL 8.0+
 
-### 🔧 Installation Steps
+### Installation Steps
 
 1. **Clone Repository**
    ```bash
@@ -122,13 +122,13 @@ Halaman Dashboard
    ```bash
    php artisan serve
 
-🌐 Access Application
+Access Application
     - Local URL: http://localhost:8000
 
-🤝 Contributing
+Contributing
 Kontribusi sangat terbuka! Silakan fork repository ini dan ajukan pull request untuk perbaikan atau fitur baru. Jangan lupa untuk membuat issue terlebih dahulu jika ada yang ingin didiskusikan.
 
-## 📁 Project Structure
+## Project Structure
 ```bash
 system-admin-billiard/
 ├── app/
@@ -151,6 +151,6 @@ system-admin-billiard/
     └── storage/           # File Storage
 ```
 
-🤝 Contributing
+Contributing
 Kontribusi sangat terbuka! Silakan fork repository ini dan ajukan pull request untuk perbaikan atau fitur baru. Jangan lupa untuk membuat issue terlebih dahulu jika ada yang ingin didiskusikan.
 
